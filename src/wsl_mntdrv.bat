@@ -1,0 +1,1 @@
+"mkdir -p /mnt/%CD:~0,1%; mount -t drvfs %CD:~0,2% /mnt/%CD:~0,1%"

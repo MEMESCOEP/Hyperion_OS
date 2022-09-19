@@ -1,0 +1,1 @@
+#include <cpu/acpi/fadt.h>
