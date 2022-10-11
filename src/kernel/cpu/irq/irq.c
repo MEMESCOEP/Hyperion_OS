@@ -4,6 +4,8 @@ void* irq_handler_table[16] = { NULL };
 
 void irq_init()
 {
+    nlog_info("[IRQ] >> Initializing IRQ...\n");
+
     irq_install_handler(0, &pit_handler);
     irq_install_handler(1, &keyboard_handler);
 	irq_install_handler(12, &mouse_handler);

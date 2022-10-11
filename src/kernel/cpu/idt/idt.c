@@ -22,6 +22,8 @@ void idt_set_gate(uint16_t num, uint64_t base, uint16_t selector, uint8_t flags)
  */
 void idt_init()
 {
+    nlog_info("[IDT] >> Initializing IDT...\n");
+
     /* Sets the first 32 IDT gates, which are exceptions */
     idt_set_gate(0, (uint64_t)isr0, 0x28, 0x8E);
     idt_set_gate(1, (uint64_t)isr1, 0x28, 0x8E);

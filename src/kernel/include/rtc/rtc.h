@@ -18,6 +18,10 @@
 #include <cpu/pic/pic.h>
 #include <utils/nlog.h>
 
+char * weekday;
+char * month_str;
+const char* rtc_months[14];
+
 void rtc_init();
 uint8_t rtc_get_seconds();
 uint8_t rtc_get_minutes();

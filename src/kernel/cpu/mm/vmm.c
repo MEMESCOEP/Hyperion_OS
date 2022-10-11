@@ -25,6 +25,7 @@ static uint64_t * get_next_level(uint64_t *current_level, uint64_t entry)
 }
 void vmm_init()
 {
+    nlog_info("[VIRT MEM MNGR] >> Initializing VMM...\n");
     kernel_pagemap.top_level = pmm_allocz(1);
     
     for (uint64_t i = (uint64_t)256; i < 512; i++)

@@ -59,6 +59,8 @@ void pci_enumerate_function(uint64_t device_addr, uint64_t function, uint64_t de
 }
 void pci_init()
 {
+    nlog_info("[PCI] >> Initializing PCI...\n");
+
     /* Looks for the MCFG in the rsdt/xsdt table */
     mcfg_table = (mcfg_t *)(acpi_find_sdt("MCFG"));
     /* Checks if it even returned anything */

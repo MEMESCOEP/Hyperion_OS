@@ -5,6 +5,7 @@
  */
 void gdt_init()
 {
+    nlog_info("[GDT] >> Initializing GDT / TSS...\n");
     tss_t tss_table;
     gdt_table = (gdt_t){
 

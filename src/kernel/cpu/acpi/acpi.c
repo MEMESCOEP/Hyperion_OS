@@ -12,15 +12,18 @@ rsdp_t * rsdp_ptr;
 rsdt_t * rsdt_table;
 uint64_t rsdp_address;
 
+
 void acpi_init()
 {
+    nlog_info("[ACPI] >> Initializing ACPI...\n");
+    
     /* Get the address of the rsdp table */
     rsdp_address = rsdp_request.response->address;
 
-    /* Check if the rsdp_address isn't 0, if it is, then panic the system */
+    /* Check if the rsdp_address isn't 0, if it is, then panic */
     if (rsdp_address == 0)
     {
-        panic("[ACPI] >> ACPI is not supported on this device\n");
+        panic("ACPI is not supported on this device!\n");
     }
 
     /* Acquire the rsdp table */
@@ -95,18 +98,19 @@ unsigned char PM1_CNT_LEN;
 
 void acpiPowerOff(struct limine_rsdp_request limine_rsdp)
 {
-   // SCI_EN is set to 1 if acpi shutdown is possible
-   if (SCI_EN == 0)
-      return;
+    // SCI_EN is set to 1 if acpi shutdown is possible
+    if (SCI_EN == 0){
+        nlog_error("ACPI poweroff is not available!\n");
+        return;
+    }
 
-   //acpiEnable();
 
-   // send the shutdown command
-   outb((unsigned int) PM1a_CNT, SLP_TYPa | SLP_EN );
-   if ( PM1b_CNT != 0 )
-      outb((unsigned int) PM1b_CNT, SLP_TYPb | SLP_EN );
+    // send the shutdown command
+    outw((unsigned int) PM1a_CNT, SLP_TYPa | SLP_EN );
+    if ( PM1b_CNT != 0 )
+        outw((unsigned int) PM1b_CNT, SLP_TYPb | SLP_EN );
 
-    outb(limine_rsdp.id, 0x00);
-   panic("acpi poweroff failed.\n");
+    outw(limine_rsdp.id, 0x00);
+    panic("ACPI poweroff failed!");
 }
 

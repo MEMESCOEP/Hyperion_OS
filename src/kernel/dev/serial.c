@@ -1,10 +1,15 @@
 #include <dev/serial.h>
+
+lock_t serial_lock;
+
 /**
  * Initializes the serial port
  * Copied code from the OSDEV wiki
  */
 int32_t serial_init()
 {
+	nlog_info("[SERIAL] >> Initializing serial...\n");
+	spinlock_lock(serial_lock);
 	outb(PORT + 1, 0x00);	 // Disable all interrupts
 	outb(PORT + 3, 0x80);	 // Enable DLAB (set baud rate divisor)
 	outb(PORT + 0, 0x03);	 // Set divisor to 3 (lo byte) 38400 baud
@@ -25,6 +30,7 @@ int32_t serial_init()
 	outb(PORT + 4, 0x0F);
 
 	nlog_info("[SERIAL] >> Serial Initialized\n");
+	spinlock_unlock(serial_lock);
 	return 0;
 }
 
@@ -55,8 +61,10 @@ int32_t is_transmit_empty() {
  */
 int serial_putchar(const char ch)
 {
+	spinlock_lock(serial_lock);
     while (is_transmit_empty() == 0);
 	outb(PORT,ch);
+	spinlock_unlock(serial_lock);
 }
 /**
  * Prints string to serial port
@@ -66,7 +74,7 @@ int serial_putchar(const char ch)
 int serial_puts(const char * str)
 {
     while (*str != '\0')
-		serial_puts(*str++);
+		serial_putchar(*str++);
 }
 /**
  * Used by the serial_printf implementation

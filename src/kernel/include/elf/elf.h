@@ -10,6 +10,7 @@
 #define ELF_H
 
 #include <stdint.h>
+#include <libc/string.h>
 
 typedef struct elf_header
 {
@@ -50,7 +51,16 @@ typedef struct elf_section_header
 	uint64_t entsize;
 } __attribute__ ((packed)) elf_section_header_t;
 
-elf_header_t * elf_get_header(void * address);
-elf_section_header_t * elf_get_section_header(elf_header_t * header, void * address);
+typedef struct elf_symbol_table
+{
+	uint32_t name;
+	uint8_t info;
+	uint8_t other;
+	uint16_t shndx;
+	uint64_t value;
+	uint64_t size;
+} __attribute__ ((packed)) elf_symbol_table_t;
+
+elf_section_header_t * elf_find_section_header(void * address, const char * name);
 
 #endif

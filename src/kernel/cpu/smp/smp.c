@@ -12,6 +12,8 @@ void cpu_init()
 
 void smp_init()
 {
+    nlog_info("[SMP] >> Initializing SMP...\n");
+
     uint32_t bsp_lapic_id = smp_request.response->bsp_lapic_id;
     uint64_t cpu_count = smp_request.response->cpu_count;
 

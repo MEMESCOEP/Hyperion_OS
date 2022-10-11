@@ -3,6 +3,7 @@
 #include <fs/ATA.h>
 #include <libc/stdio.h>
 #include <libc/string.h>
+#include <fs/fs.h>
 
 #ifndef DISK_H_INCLUDED
 #include <fs/ATA.h>
@@ -36,6 +37,7 @@ void ata_select_drive(uint8_t drive)
    buf = 0;
    
    outb(0x1F6, buf);
+   nlog_info("Selected drive: %d\n", drive);
 }
 
 int ata_get_drive_count(){

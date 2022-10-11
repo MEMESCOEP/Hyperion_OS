@@ -8,5 +8,5 @@ void syscall_write_test(const char* str)
 {
 	vmm_switch_pagemap(&kernel_pagemap);
     term_write_str(str, strlen(str));
-	vmm_switch_pagemap(current_process.pagemap);
+	vmm_switch_pagemap(current_process.pmap);
 }

@@ -9,7 +9,7 @@ const char* rtc_days[7] = {
     "Friday",
     "Saturday"
 };
-const char* rtc_months[12] = {
+const char* rtc_months[14] = {
 	"",
     "January",
     "February",
@@ -22,10 +22,12 @@ const char* rtc_months[12] = {
     "September",
     "October",
     "November",
-    "December"
+    "December",
+    ""
 };
 void rtc_init()
 {
+    nlog_info("[RTC] >> Initializing RTC...\n");
     cli();			            // disable interrupts
     outb(0x70, 0x8B);		    // select register B, and disable NMI
     int8_t prev = inb(0x71);	// read the current value of register B

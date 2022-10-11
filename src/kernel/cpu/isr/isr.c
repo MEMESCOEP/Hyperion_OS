@@ -1,4 +1,5 @@
 #include <cpu/isr/isr.h>
+#include <elf/elf.h>
 
 char *exception_messages[] = {
     "Division By Zero",
@@ -42,6 +43,7 @@ void* isr_handler_table[256] = { NULL };
 
 void isr_init()
 {
+    nlog_info("[ISR] >> Initializing ISR...\n");
     isr_install_handler(14, &page_fault);
     nlog_info("[ISR] >> ISR Initialized\n");
 }
@@ -73,6 +75,28 @@ void page_fault(struct registers *r)
     printf("CR4 = 0x%016lX CR3 = 0x%016lX\n", read_cr4(), read_cr3());
     printf("CR2 = 0x%016lX CR0 = 0x%016lX\n", read_cr2(), read_cr0());
     printf("RFLAGS = 0x%016lX\n", r->rflags);
+
+    int symbol_num;
+	elf_section_header_t * symtab_sh;
+	elf_section_header_t * strtab_sh;
+	elf_symbol_table_t * symtab;
+	const char * strtab;
+
+	symtab_sh = elf_find_section_header(kernel_file_request.response->kernel_file->address, ".symtab");
+	strtab_sh = elf_find_section_header(kernel_file_request.response->kernel_file->address, ".strtab");
+
+	symbol_num = symtab_sh->size / symtab_sh->entsize;
+	symtab = (void *) (kernel_file_request.response->kernel_file->address + symtab_sh->offset);
+	strtab = (void *) (kernel_file_request.response->kernel_file->address + strtab_sh->offset);
+
+	printf("Traceback:\n");
+	for (size_t i = 0; i < symbol_num; i++)
+	{
+		if (symtab[i].name && r->rip > symtab[i].value && r->rip < symtab[i].value + symtab[i].size && ((symtab[i].info) &0xf) == 2)
+		{
+			printf("\t%s at %016lX\n", strtab + symtab[i].name, r->rip);
+		}
+	}
 
     serial_printf("[ISRERR]\n");
     serial_printf("\x1b[90m%02x:%02x:%02x\x1b[0m \x1b[91mPANIC\x1b[0m \x1b[90m%s:%s:%u\x1b[0m ", rtc_get_hours(), rtc_get_minutes(), rtc_get_seconds(), __FILE__, __func__, __LINE__);

@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <cpu/cpu.h>
 #include <utils/nlog.h>
+#include <cpu/spinlock/spinlock.h>
 
 #define PORT 0x3F8
 

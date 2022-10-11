@@ -12,15 +12,19 @@
 #include <cpu/mm/vmm.h>
 #include <cpu/spinlock/spinlock.h>
 
+#include <utils/vec.h>
+#include <cpu/spinlock/spinlock.h>
+
 typedef struct task
 {
-    registers_t regs;
-    pagemap_t * pagemap;
+	struct registers state;
+	pagemap_t * pmap;
 } task_t;
 
 typedef vec_t(task_t *) task_vec_t;
 
 extern task_t current_process;
+extern bool schedule;
 
 void sched_init();
 void sched_yield();

@@ -20,5 +20,6 @@ extern volatile struct limine_smp_request smp_request;
 extern volatile struct limine_module_request module_request;
 extern volatile struct limine_stack_size_request stack_size_request;
 extern volatile struct limine_framebuffer_request framebuffer_request;
+extern volatile struct limine_kernel_file_request kernel_file_request;
 
 #endif

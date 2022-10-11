@@ -23,7 +23,7 @@ timeout 1
 cls
 
 echo !ESC![35m[== SETTING UP WSL / BUILD ENV ==]!ESC![0m
-echo Checkig if Windows Subsystem for Linux is enabled...
+echo Checking if Windows Subsystem for Linux is enabled...
 where wsl > NUL
 if %ERRORLEVEL% NEQ 0 (color 04 && echo WSL isn't installed! && pause && exit)
 echo WSL is enabled.

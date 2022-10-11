@@ -8,6 +8,7 @@ void * syscall_table[] =
 
 void syscall_init()
 {
+    nlog_info("[SYSCALL] >> Initializing SYSCALL...\n");
     isr_install_handler(128, &syscall_handler);
     nlog_info("[SYSCALL] >> SYSCALL Initialized\n");
 }

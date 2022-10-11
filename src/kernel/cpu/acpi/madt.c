@@ -8,6 +8,7 @@ iso_vec_t madt_isos;
 lapic_nmi_vec_t madt_lapic_nmis;
 void madt_init()
 {
+    nlog_info("[APIC] >> Initializing MADT...\n");
     /* Looks for the APIC in the rsdt/xsdt table */
     madt_table = (madt_t *)(acpi_find_sdt("APIC"));
     /* Checks if it even returned anything */

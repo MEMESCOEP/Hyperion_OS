@@ -23,6 +23,7 @@ bool bitmap_get(size_t index)
 
 void pmm_init()
 {
+    nlog_info("[PHYS MEM MNGR] >> Initializing PMM...\n");
 	spinlock_lock(pmm_lock);
     struct limine_memmap_entry **memmap = memmap_request.response->entries;
     uint64_t memmap_entries = memmap_request.response->entry_count;
